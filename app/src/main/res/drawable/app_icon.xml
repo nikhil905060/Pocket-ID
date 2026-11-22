@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Orange Rounded Wallet Back -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M24,10 H84 A14,14 0 0 1 98,24 V84 A14,14 0 0 1 84,98 H24 A14,14 0 0 1 10,84 V24 A14,14 0 0 1 24,10 Z" />
+
+    <!-- Back Card (Mint White) -->
+    <path
+        android:fillColor="#ECFDF5"
+        android:pathData="M34,18 H74 A7,7 0 0 1 81,25 V54 H27 V25 A7,7 0 0 1 34,18 Z" />
+
+    <!-- Middle Card (Royal Blue) -->
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M26,24 H82 A8,8 0 0 1 90,32 V58 H18 V32 A8,8 0 0 1 26,24 Z" />
+
+    <!-- Front ID Card -->
+    <path
+        android:fillColor="#F8FAFC"
+        android:pathData="M18,32 H90 A9,9 0 0 1 99,41 V72 H9 V41 A9,9 0 0 1 18,32 Z" />
+
+    <!-- Avatar Box -->
+    <path
+        android:fillColor="#E2E8F0"
+        android:pathData="M26,40 H42 A4,4 0 0 1 46,44 V58 A4,4 0 0 1 42,62 H26 A4,4 0 0 1 22,58 V44 A4,4 0 0 1 26,40 Z" />
+
+    <!-- Avatar Head & Shoulders -->
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M34,44 A4,4 0 1 1 34,52 A4,4 0 1 1 34,44 Z M26,60 C26,55 42,55 42,60 Z" />
+
+    <!-- ID Text Lines -->
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M53,43 H81 A2,2 0 0 1 81,47 H53 A2,2 0 0 1 53,43 Z" />
+    <path
+        android:fillColor="#CBD5E1"
+        android:pathData="M53,50 H75 A2,2 0 0 1 75,54 H53 A2,2 0 0 1 53,50 Z" />
+    <path
+        android:fillColor="#CBD5E1"
+        android:pathData="M53,57 H69 A2,2 0 0 1 69,61 H53 A2,2 0 0 1 53,57 Z" />
+
+    <!-- Front Yellow Pocket -->
+    <path
+        android:fillColor="#FBBF24"
+        android:pathData="M10,54 H33 A6,6 0 0 1 39,60 V64 A8,8 0 0 0 47,72 H61 A8,8 0 0 0 69,64 V60 A6,6 0 0 1 75,54 H98 V84 A14,14 0 0 1 84,98 H24 A14,14 0 0 1 10,84 Z" />
+</vector>
