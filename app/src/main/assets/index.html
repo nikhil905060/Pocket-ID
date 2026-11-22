@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="bento">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pocket Id</title>
+<style>
+  :root {
+    --bg: #F4F4F5;
+    --surface: #FFFFFF;
+    --surface-alt: #E4E4E7;
+    --hero: #141518;
+    --hero-ink: #FFFFFF;
+    --ink: #111315;
+    --muted: #71717A;
+    --accent: #10B981;
+    --danger: #EF4444;
+    --border: 1px solid rgba(0,0,0,0.06);
+    --shadow: none;
+    --shadow-sm: none;
+    --radius-card: 26px;
+    --radius-pill: 999px;
+    --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  [data-theme="brutal"] {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --surface-alt: #FFD426;
+    --hero: #FFD426;
+    --hero-ink: #111111;
+    --ink: #111111;
+    --muted: #555555;
+    --accent: #22C55E;
+    --danger: #FB7185;
+    --border: 2.2px solid #111111;
+    --shadow: 4px 4px 0px #111111;
+    --shadow-sm: 3px 3px 0px #111111;
+    --radius-card: 14px;
+    --radius-pill: 10px;
+    --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  [data-theme="terminal"] {
+    --bg: #080A08;
+    --surface: #0F140F;
+    --surface-alt: #162216;
+    --hero: #111C11;
+    --hero-ink: #22C55E;
+    --ink: #22C55E;
+    --muted: #15803D;
+    --accent: #4ADE80;
+    --danger: #F87171;
+    --border: 1.5px solid #22C55E;
+    --shadow: none;
+    --shadow-sm: none;
+    --radius-card: 6px;
+    --radius-pill: 4px;
+    --font: 'Courier New', Courier, monospace;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 16px 16px 96px 16px;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  /* MacBook Genie Page & Modal Transition */
+  @keyframes genieIn {
+    0% {
+      opacity: 0;
+      transform: translateY(42vh) scaleX(0.18) scaleY(0.12);
+      clip-path: polygon(35% 0%, 65% 0%, 95% 100%, 5% 100%);
+    }
+    55% {
+      opacity: 1;
+      transform: translateY(-2vh) scaleX(0.96) scaleY(1.03);
+      clip-path: polygon(4% 0%, 96% 0%, 100% 100%, 0% 100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scaleX(1) scaleY(1);
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+  }
+
+  @keyframes genieOut {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scaleX(1) scaleY(1);
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+    40% {
+      opacity: 0.9;
+      transform: translateY(10vh) scaleX(0.65) scaleY(0.75);
+      clip-path: polygon(15% 0%, 85% 0%, 98% 100%, 2% 100%);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(45vh) scaleX(0.12) scaleY(0.08);
+      clip-path: polygon(40% 0%, 60% 0%, 95% 100%, 5% 100%);
+    }
+  }
+
+  .genie-enter {
+    transform-origin: bottom center;
+    animation: genieIn 0.44s cubic-bezier(0.22, 1.18, 0.36, 1) forwards;
+  }
+
+  .genie-exit {
+    transform-origin: bottom center;
+    animation: genieOut 0.32s cubic-bezier(0.55, 0.05, 0.68, 0.19) forwards;
+  }
+
+  /* Header */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .brand h1 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .brand span {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .top-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--ink);
+    border: var(--border);
+    box-shadow: var(--shadow-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.08s ease;
+  }
+
+  .icon-btn:active {
+    transform: scale(0.93);
+  }
+
+  .pill-btn {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--ink);
+    border: var(--border);
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  /* Hero Card */
+  .hero-card {
+    background: var(--hero);
+    color: var(--hero-ink);
+    border-radius: var(--radius-card);
+    border: var(--border);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hero-stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    opacity: 0.72;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .hero-stat-num {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    margin-top: 4px;
+  }
+
+  .hero-sub {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 6px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+  }
+
+  .badge-emerald {
+    background: var(--accent);
+    color: #08120B;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    border: var(--border);
+  }
+
+  /* Category Tabs */
+  .cat-bar {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    margin-bottom: 14px;
+    scrollbar-width: none;
+  }
+  .cat-bar::-webkit-scrollbar { display: none; }
+
+  .cat-chip {
+    flex-shrink: 0;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--ink);
+    border: var(--border);
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font);
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .cat-chip.active {
+    background: var(--hero);
+    color: var(--hero-ink);
+  }
+
+  /* Search Bar */
+  .search-wrap {
+    margin-bottom: 14px;
+  }
+
+  .search-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--ink);
+    border: var(--border);
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font);
+    font-size: 13.5px;
+    font-weight: 600;
+    outline: none;
+  }
+
+  /* Document Cards */
+  .doc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .doc-card {
+    background: var(--surface);
+    border-radius: var(--radius-card);
+    border: var(--border);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    position: relative;
+    transition: transform 0.14s ease;
+  }
+
+  .doc-card.pressing {
+    transform: scale(0.965);
+  }
+
+  .doc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .doc-cat-tag {
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-alt);
+    color: var(--ink);
+    border: var(--border);
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+
+  .doc-title {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .doc-holder {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .doc-num-box {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: calc(var(--radius-card) - 8px);
+    background: var(--bg);
+    border: var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .doc-num-val {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    word-break: break-all;
+  }
+
+  .doc-footer {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .mini-pill {
+    height: 30px;
+    padding: 0 12px;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--ink);
+    border: var(--border);
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Floating Action Button */
+  .fab {
+    position: fixed;
+    right: 20px;
+    bottom: 22px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--hero);
+    color: var(--hero-ink);
+    border: var(--border);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 40;
+  }
+    /* Modals & Overlays */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 14px;
+    z-index: 60;
+  }
+
+  .overlay.open {
+    display: flex;
+  }
+
+  .modal-box {
+    width: 100%;
+    max-width: 480px;
+    background: var(--surface);
+    color: var(--ink);
+    border-radius: var(--radius-card);
+    border: var(--border);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+
+  .modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .modal-head h2 {
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .field {
+    margin-bottom: 12px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  .field input, .field select {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border-radius: calc(var(--radius-card) - 10px);
+    background: var(--bg);
+    color: var(--ink);
+    border: var(--border);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+  }
+
+  .file-box {
+    border: 2px dashed var(--muted);
+    border-radius: calc(var(--radius-card) - 8px);
+    padding: 14px;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    background: var(--bg);
+  }
+
+  .primary-submit {
+    width: 100%;
+    height: 48px;
+    margin-top: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--hero);
+    color: var(--hero-ink);
+    border: var(--border);
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  /* Fullscreen Photo Viewer (Long Press) */
+  .viewer-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 80;
+    display: none;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .viewer-overlay.open {
+    display: flex;
+  }
+
+  .viewer-stage {
+    flex: 1;
+    margin: 12px 0;
+    border-radius: var(--radius-card);
+    border: var(--border);
+    background: var(--surface);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+    position: relative;
+  }
+
+  .viewer-stage img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transform-origin: center center;
+    transition: transform 0.05s linear;
+  }
+
+  /* Theme-Matched Lock Screen */
+  .lock-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    color: var(--ink);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .lock-screen.hidden {
+    display: none;
+  }
+
+  .lock-card {
+    width: 100%;
+    max-width: 340px;
+    background: var(--surface);
+    border: var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow);
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .pin-dots {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .pin-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: var(--border);
+    background: var(--bg);
+  }
+
+  .pin-dot.filled {
+    background: var(--accent);
+  }
+
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .key-btn {
+    height: 54px;
+    border-radius: var(--radius-pill);
+    background: var(--bg);
+    color: var(--ink);
+    border: var(--border);
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font);
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .key-btn:active {
+    transform: scale(0.94);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 92px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--hero);
+    color: var(--hero-ink);
+    border: var(--border);
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 90;
+  }
+
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+  <!-- Lock Screen -->
+  <div id="lockScreen" class="lock-screen">
+    <div class="lock-card genie-enter">
+      <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;">Vault Locked</div>
+      <h2 id="lockTitle" style="font-size:22px;font-weight:800;margin-top:4px;">Pocket Id</h2>
+      <p id="lockSub" style="font-size:12px;color:var(--muted);margin-top:4px;">Enter 4-Digit PIN</p>
+      <div class="pin-dots" id="pinDots">
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="keypad">
+        <button class="key-btn" onclick="pressPin('1')">1</button>
+        <button class="key-btn" onclick="pressPin('2')">2</button>
+        <button class="key-btn" onclick="pressPin('3')">3</button>
+        <button class="key-btn" onclick="pressPin('4')">4</button>
+        <button class="key-btn" onclick="pressPin('5')">5</button>
+        <button class="key-btn" onclick="pressPin('6')">6</button>
+        <button class="key-btn" onclick="pressPin('7')">7</button>
+        <button class="key-btn" onclick="pressPin('8')">8</button>
+        <button class="key-btn" onclick="pressPin('9')">9</button>
+        <button class="key-btn" onclick="triggerBio()" aria-label="Fingerprint">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"/></svg>
+        </button>
+        <button class="key-btn" onclick="pressPin('0')">0</button>
+        <button class="key-btn" onclick="clearPin()">DEL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App Shell -->
+  <div id="appShell" class="genie-enter">
+    <div class="topbar">
+      <div class="brand">
+        <span>Offline Vault</span>
+        <h1>Pocket Id</h1>
+      </div>
+      <div class="top-actions">
+        <button class="pill-btn" id="themeBtn" onclick="cycleTheme()">BENTO</button>
+        <button class="icon-btn" onclick="toggleMask()" id="maskBtn" title="Hide/Show Numbers">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+        <button class="icon-btn" onclick="openBackupModal()" title="Backup & Restore">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div>
+        <div class="hero-stat-label">Stored Documents</div>
+        <div class="hero-stat-num" id="totalCount">0</div>
+        <div class="hero-sub">Long-press any card for original scan</div>
+      </div>
+      <div class="hero-actions">
+        <span class="badge-emerald" id="maskBadge">VISIBLE</span>
+        <button class="mini-pill" onclick="lockAppNow()">LOCK NOW</button>
+      </div>
+    </div>
+
+    <div class="cat-bar" id="catBar">
+      <button class="cat-chip active" data-cat="All" onclick="selectCategory('All', this)">All</button>
+      <button class="cat-chip" data-cat="ID Cards" onclick="selectCategory('ID Cards', this)">ID Cards</button>
+      <button class="cat-chip" data-cat="Education" onclick="selectCategory('Education', this)">Education</button>
+      <button class="cat-chip" data-cat="Work & Bank" onclick="selectCategory('Work & Bank', this)">Work &amp; Bank</button>
+      <button class="cat-chip" data-cat="Vehicle" onclick="selectCategory('Vehicle', this)">Vehicle</button>
+    </div>
+
+    <div class="search-wrap">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search document name or number..." oninput="renderDocs()">
+    </div>
+
+    <div class="doc-list" id="docList"></div>
+  </div>
+
+  <!-- Floating Add Button -->
+  <button class="fab" onclick="openAddModal()" aria-label="Add Document">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  </button>
+
+  <!-- Add / Edit Document Modal -->
+  <div class="overlay" id="docModal">
+    <div class="modal-box" id="docModalBox">
+      <div class="modal-head">
+        <h2 id="modalTitle">New Document</h2>
+        <button class="mini-pill" onclick="closeModal('docModal', 'docModalBox')">CLOSE</button>
+      </div>
+      <input type="hidden" id="editId">
+      <div class="field">
+        <label>Category</label>
+        <select id="docCat">
+          <option value="ID Cards">ID Cards</option>
+          <option value="Education">Education</option>
+          <option value="Work & Bank">Work &amp; Bank</option>
+          <option value="Vehicle">Vehicle</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Document Title</label>
+        <input type="text" id="docName" placeholder="e.g. Driving Licence, ITI Certificate">
+      </div>
+      <div class="field">
+        <label>Holder Name</label>
+        <input type="text" id="docHolder" placeholder="Full Name">
+      </div>
+      <div class="field">
+        <label>Document / ID Number</label>
+        <input type="text" id="docNumber" placeholder="Enter ID or Roll Number">
+      </div>
+      <div class="field">
+        <label>Issue / Expiry / Note</label>
+        <input type="text" id="docNote" placeholder="e.g. Valid till 2046 or 88.89%">
+      </div>
+      <div class="field">
+        <label>Original Document Photo</label>
+        <div class="file-box" onclick="document.getElementById('docPhotoInput').click()">
+          <span id="photoStatus">Tap to choose photo from gallery</span>
+        </div>
+        <input type="file" id="docPhotoInput" accept="image/*" style="display:none" onchange="handlePhotoPick(event)">
+      </div>
+      <button class="primary-submit" onclick="saveDocument()">SAVE TO VAULT</button>
+    </div>
+  </div>
+
+  <!-- Backup & Settings Modal -->
+  <div class="overlay" id="backupModal">
+    <div class="modal-box" id="backupModalBox">
+      <div class="modal-head">
+        <h2>Backup &amp; Security</h2>
+        <button class="mini-pill" onclick="closeModal('backupModal', 'backupModalBox')">CLOSE</button>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Daily auto-backup saves to Downloads/PocketIdBackups.</p>
+      <button class="primary-submit" onclick="exportBackupNow()">SAVE BACKUP NOW (.JSON)</button>
+      <button class="primary-submit" style="background:var(--surface-alt);color:var(--ink);margin-top:10px;" onclick="document.getElementById('restoreInput').click()">RESTORE FROM .JSON</button>
+      <input type="file" id="restoreInput" accept=".json,application/json" style="display:none" onchange="importBackup(event)">
+      <button class="primary-submit" style="background:var(--danger);color:#FFF;margin-top:10px;" onclick="resetPinPrompt()">CHANGE 4-DIGIT PIN</button>
+    </div>
+  </div>
+
+  <!-- Fullscreen Long-Press Photo Viewer -->
+  <div class="viewer-overlay" id="photoViewer">
+    <div class="topbar" style="margin-bottom:0;">
+      <div>
+        <span id="viewerCat" style="font-size:11px;font-weight:800;color:var(--muted);">ORIGINAL SCAN</span>
+        <h2 id="viewerTitle" style="font-size:18px;font-weight:800;">Document</h2>
+      </div>
+      <div class="top-actions">
+        <button class="mini-pill" onclick="resetZoom()">1X</button>
+        <button class="mini-pill" onclick="closeViewer()">CLOSE</button>
+      </div>
+    </div>
+    <div class="viewer-stage" id="viewerStage">
+      <img id="viewerImg" src="" alt="Document Scan">
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script>
+  const DB_NAME = 'PocketIdVaultDB';
+  const STORE_NAME = 'docs';
+  const LS_META_KEY = 'pocketid_meta_v1';
+  const LS_PIN_KEY = 'pocketid_pin_v1';
+  const LS_THEME_KEY = 'pocketid_theme_v1';
+  const LS_LAST_BACKUP = 'pocketid_last_backup_date';
+
+  let db = null;
+  let docs = [];
+  let activeCat = 'All';
+  let isMasked = false;
+  let currentThemeIdx = 0;
+  const themes = ['bento', 'brutal', 'terminal'];
+  let tempPhotoData = '';
+  let enteredPin = '';
+  let settingNewPin = false;
+  let longPressTimer = null;
+  let touchMoved = false;
+
+  // Pinch-to-Zoom state
+  let scale = 1, lastScale = 1, startDist = 0, posX = 0, posY = 0, startX = 0, startY = 0;
+
+  // 1. IndexedDB Init
+  function initDB() {
+    return new Promise((resolve) => {
+      const req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = (e) => {
+        const d = e.target.result;
+        if (!d.objectStoreNames.contains(STORE_NAME)) {
+          d.createObjectStore(STORE_NAME, { keyPath: 'id' });
+        }
+      };
+      req.onsuccess = (e) => {
+        db = e.target.result;
+        resolve();
+      };
+      req.onerror = () => resolve();
+    });
+  }
+
+  function loadAllFromDB() {
+    return new Promise((resolve) => {
+      if (!db) return resolve([]);
+      const tx = db.transaction(STORE_NAME, 'readonly');
+      const store = tx.objectStore(STORE_NAME);
+      const req = store.getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = () => resolve([]);
+    });
+  }
+
+  function saveItemToDB(item) {
+    return new Promise((resolve) => {
+      if (!db) return resolve();
+      const tx = db.transaction(STORE_NAME, 'readwrite');
+      tx.objectStore(STORE_NAME).put(item);
+      tx.oncomplete = () => resolve();
+    });
+  }
+
+  function deleteItemFromDB(id) {
+    return new Promise((resolve) => {
+      if (!db) return resolve();
+      const tx = db.transaction(STORE_NAME, 'readwrite');
+      tx.objectStore(STORE_NAME).delete(id);
+      tx.oncomplete = () => resolve();
+    });
+  }
+
+  function syncLocalStorageMeta() {
+    const metaOnly = docs.map(({ photo, ...rest }) => rest);
+    try {
+      localStorage.setItem(LS_META_KEY, JSON.stringify(metaOnly));
+    } catch (e) {}
+  }
+
+  // 2. Theme Switcher with Genie Pulse
+  function applyTheme(themeName) {
+    document.documentElement.setAttribute('data-theme', themeName);
+    localStorage.setItem(LS_THEME_KEY, themeName);
+    document.getElementById('themeBtn').textContent = themeName.toUpperCase();
+  }
+
+  function cycleTheme() {
+    currentThemeIdx = (currentThemeIdx + 1) % themes.length;
+    const shell = document.getElementById('appShell');
+    shell.classList.remove('genie-enter');
+    void shell.offsetWidth;
+    applyTheme(themes[currentThemeIdx]);
+    shell.classList.add('genie-enter');
+  }
+
+  // 3. Security: PIN & Native Biometric Lock
+  function initLockState() {
+    const savedPin = localStorage.getItem(LS_PIN_KEY);
+    if (!savedPin) {
+      settingNewPin = true;
+      document.getElementById('lockTitle').textContent = 'Set Vault PIN';
+      document.getElementById('lockSub').textContent = 'Create a 4-Digit PIN';
+    } else {
+      settingNewPin = false;
+      document.getElementById('lockTitle').textContent = 'Pocket Id';
+      document.getElementById('lockSub').textContent = 'Enter 4-Digit PIN';
+    }
+    updatePinDots();
+  }
+
+  function updatePinDots() {
+    const dots = document.querySelectorAll('#pinDots .pin-dot');
+    dots.forEach((d, idx) => {
+      d.classList.toggle('filled', idx < enteredPin.length);
+    });
+  }
+
+  function pressPin(digit) {
+    if (enteredPin.length >= 4) return;
+    enteredPin += digit;
+    updatePinDots();
+    if (enteredPin.length === 4) {
+      setTimeout(verifyOrSetPin, 120);
+    }
+  }
+
+  function clearPin() {
+    enteredPin = enteredPin.slice(0, -1);
+    updatePinDots();
+  }
+
+  function verifyOrSetPin() {
+    const savedPin = localStorage.getItem(LS_PIN_KEY);
+    if (settingNewPin) {
+      localStorage.setItem(LS_PIN_KEY, enteredPin);
+      settingNewPin = false;
+      enteredPin = '';
+      updatePinDots();
+      unlockVault();
+      showToast('4-Digit PIN Saved');
+    } else if (enteredPin === savedPin) {
+      enteredPin = '';
+      updatePinDots();
+      unlockVault();
+    } else {
+      enteredPin = '';
+      updatePinDots();
+      showToast('Wrong PIN');
+      if (navigator.vibrate) navigator.vibrate(120);
+    }
+  }
+
+  function unlockVault() {
+    const ls = document.getElementById('lockScreen');
+    ls.classList.add('hidden');
+    const shell = document.getElementById('appShell');
+    shell.classList.remove('genie-enter');
+    void shell.offsetWidth;
+    shell.classList.add('genie-enter');
+    checkDailyAutoBackup();
+  }
+
+  window.lockAppNow = function() {
+    enteredPin = '';
+    initLockState();
+    const ls = document.getElementById('lockScreen');
+    ls.classList.remove('hidden');
+  };
+
+  function triggerBio() {
+    if (window.AndroidBridge && AndroidBridge.isBiometricAvailable()) {
+      AndroidBridge.authenticateBiometric();
+    } else {
+      showToast('Biometric not available');
+    }
+  }
+
+  window.onBiometricSuccess = function() {
+    enteredPin = '';
+    updatePinDots();
+    unlockVault();
+  };
+
+  window.onBiometricFail = function() {
+    showToast('Use 4-Digit PIN');
+  };
+
+  function resetPinPrompt() {
+    closeModal('backupModal', 'backupModalBox');
+    localStorage.removeItem(LS_PIN_KEY);
+    lockAppNow();
+  }
+
+  // 4. Mask / Hide Sensitive Numbers
+  function toggleMask() {
+    isMasked = !isMasked;
+    document.getElementById('maskBadge').textContent = isMasked ? 'HIDDEN' : 'VISIBLE';
+    renderDocs();
+  }
+
+  function formatNumber(num) {
+    if (!num) return '—';
+    if (!isMasked) return num;
+    if (num.length <= 4) return '••••';
+    return '•••• •••• ' + num.slice(-4);
+  }
+
+  // 5. Image Compression (keeps JSON backups fast & light)
+  function handlePhotoPick(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    document.getElementById('photoStatus').textContent = 'Processing scan...';
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const MAX_W = 1280;
+        let w = img.width, h = img.height;
+        if (w > MAX_W) {
+          h = Math.round((h * MAX_W) / w);
+          w = MAX_W;
+        }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        tempPhotoData = canvas.toDataURL('image/jpeg', 0.84);
+        document.getElementById('photoStatus').textContent = 'Original Scan Ready (' + Math.round(tempPhotoData.length / 1024) + ' KB)';
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // 6. CRUD Operations
+  function openAddModal(editDoc = null) {
+    document.getElementById('editId').value = editDoc ? editDoc.id : '';
+    document.getElementById('modalTitle').textContent = editDoc ? 'Edit Document' : 'New Document';
+    document.getElementById('docCat').value = editDoc ? editDoc.category : (activeCat === 'All' ? 'ID Cards' : activeCat);
+    document.getElementById('docName').value = editDoc ? editDoc.name : '';
+    document.getElementById('docHolder').value = editDoc ? editDoc.holder : '';
+    document.getElementById('docNumber').value = editDoc ? editDoc.number : '';
+    document.getElementById('docNote').value = editDoc ? editDoc.note : '';
+    tempPhotoData = editDoc ? (editDoc.photo || '') : '';
+    document.getElementById('photoStatus').textContent = tempPhotoData ? 'Original Scan Attached (Tap to replace)' : 'Tap to choose photo from gallery';
+    openModal('docModal', 'docModalBox');
+  }
+
+  async function saveDocument() {
+    const name = document.getElementById('docName').value.trim();
+    const number = document.getElementById('docNumber').value.trim();
+    if (!name) {
+      showToast('Enter Document Title');
+      return;
+    }
+    const existingId = document.getElementById('editId').value;
+    const item = {
+      id: existingId || ('doc_' + Date.now()),
+      category: document.getElementById('docCat').value,
+      name,
+      holder: document.getElementById('docHolder').value.trim(),
+      number,
+      note: document.getElementById('docNote').value.trim(),
+      photo: tempPhotoData,
+      updatedAt: Date.now()
+    };
+
+    await saveItemToDB(item);
+    const idx = docs.findIndex(d => d.id === item.id);
+    if (idx >= 0) docs[idx] = item;
+    else docs.unshift(item);
+
+    syncLocalStorageMeta();
+    closeModal('docModal', 'docModalBox');
+    renderDocs();
+    showToast('Saved to Vault');
+  }
+
+  async function deleteDocument(id) {
+    await deleteItemFromDB(id);
+    docs = docs.filter(d => d.id !== id);
+    syncLocalStorageMeta();
+    renderDocs();
+    showToast('Document Deleted');
+  }
+
+  function copyNumber(num) {
+    if (!num) return;
+    navigator.clipboard.writeText(num);
+    showToast('Number Copied');
+  }
+
+  // 7. Category & Render with Genie Animation
+  function selectCategory(cat, btn) {
+    activeCat = cat;
+    document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    const list = document.getElementById('docList');
+    list.classList.remove('genie-enter');
+    void list.offsetWidth;
+    list.classList.add('genie-enter');
+    renderDocs();
+  }
+
+  function renderDocs() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    const filtered = docs.filter(d => {
+      const matchCat = activeCat === 'All' || d.category === activeCat;
+      const matchQ = !q || d.name.toLowerCase().includes(q) || (d.number && d.number.toLowerCase().includes(q)) || (d.holder && d.holder.toLowerCase().includes(q));
+      return matchCat && matchQ;
+    });
+
+    document.getElementById('totalCount').textContent = docs.length;
+    const list = document.getElementById('docList');
+    list.innerHTML = '';
+
+    if (filtered.length === 0) {
+      list.innerHTML = `<div class="doc-card" style="text-align:center;color:var(--muted);padding:28px;">No documents here yet. Tap + to add.</div>`;
+      return;
+    }
+
+    filtered.forEach(doc => {
+      const card = document.createElement('div');
+      card.className = 'doc-card';
+      card.innerHTML = `
+        <div class="doc-top">
+          <div>
+            <span class="doc-cat-tag">${escapeHtml(doc.category)}</span>
+            <div class="doc-title">${escapeHtml(doc.name)}</div>
+            ${doc.holder ? `<div class="doc-holder">${escapeHtml(doc.holder)}</div>` : ''}
+          </div>
+          <span class="mini-pill" style="background:${doc.photo ? 'var(--accent)' : 'var(--bg)'};color:${doc.photo ? '#08120B' : 'var(--muted)'};">
+            ${doc.photo ? 'HOLD FOR SCAN' : 'NO SCAN'}
+          </span>
+        </div>
+        <div class="doc-num-box">
+          <div class="doc-num-val">${escapeHtml(formatNumber(doc.number))}</div>
+          <button class="mini-pill" onclick="event.stopPropagation(); copyNumber('${escapeAttr(doc.number)}')">COPY</button>
+        </div>
+        <div class="doc-footer">
+          <span>${escapeHtml(doc.note || 'Offline Secured')}</span>
+          <div style="display:flex;gap:6px;">
+            <button class="mini-pill" onclick="event.stopPropagation(); openAddModalById('${doc.id}')">EDIT</button>
+            <button class="mini-pill" style="color:var(--danger);" onclick="event.stopPropagation(); deleteDocument('${doc.id}')">DEL</button>
+          </div>
+        </div>
+      `;
+
+      // Long Press Handler (450ms) with scroll protection
+      card.addEventListener('touchstart', (e) => {
+        if (e.target.tagName === 'BUTTON') return;
+        touchMoved = false;
+        card.classList.add('pressing');
+        longPressTimer = setTimeout(() => {
+          card.classList.remove('pressing');
+          if (!touchMoved) {
+            if (navigator.vibrate) navigator.vibrate(35);
+            openPhotoViewer(doc);
+          }
+        }, 450);
+      }, { passive: true });
+
+      card.addEventListener('touchmove', () => {
+        touchMoved = true;
+        card.classList.remove('pressing');
+        clearTimeout(longPressTimer);
+      }, { passive: true });
+
+      card.addEventListener('touchend', () => {
+        card.classList.remove('pressing');
+        clearTimeout(longPressTimer);
+      });
+
+      list.appendChild(card);
+    });
+  }
+
+  function openAddModalById(id) {
+    const doc = docs.find(d => d.id === id);
+    if (doc) openAddModal(doc);
+  }
+
+  // 8. Fullscreen Photo Viewer + Pinch-to-Zoom
+  function openPhotoViewer(doc) {
+    if (!doc.photo) {
+      showToast('No photo attached to this card');
+      return;
+    }
+    document.getElementById('viewerCat').textContent = doc.category.toUpperCase();
+    document.getElementById('viewerTitle').textContent = doc.name;
+    document.getElementById('viewerImg').src = doc.photo;
+    resetZoom();
+    const v = document.getElementById('photoViewer');
+    v.classList.remove('genie-exit');
+    v.classList.add('open', 'genie-enter');
+  }
+
+  function closeViewer() {
+    const v = document.getElementById('photoViewer');
+    v.classList.remove('genie-enter');
+    v.classList.add('genie-exit');
+    setTimeout(() => {
+      v.classList.remove('open', 'genie-exit');
+    }, 300);
+  }
+
+  function resetZoom() {
+    scale = 1; lastScale = 1; posX = 0; posY = 0;
+    updateImgTransform();
+  }
+
+  function updateImgTransform() {
+    document.getElementById('viewerImg').style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+  }
+
+  const stage = document.getElementById('viewerStage');
+  stage.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      startDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+    } else if (e.touches.length === 1 && scale > 1) {
+      startX = e.touches[0].clientX - posX;
+      startY = e.touches[0].clientY - posY;
+    }
+  }, { passive: true });
+
+  stage.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2 && startDist > 0) {
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      scale = Math.min(4, Math.max(1, lastScale * (dist / startDist)));
+      updateImgTransform();
+    } else if (e.touches.length === 1 && scale > 1) {
+      posX = e.touches[0].clientX - startX;
+      posY = e.touches[0].clientY - startY;
+      updateImgTransform();
+    }
+  }, { passive: true });
+
+  stage.addEventListener('touchend', () => {
+    lastScale = scale;
+    if (scale === 1) { posX = 0; posY = 0; updateImgTransform(); }
+  });
+
+  // 9. Genie Modal Helpers & Native Back Button
+  function openModal(overlayId, boxId) {
+    const ov = document.getElementById(overlayId);
+    const box = document.getElementById(boxId);
+    box.classList.remove('genie-exit');
+    box.classList.add('genie-enter');
+    ov.classList.add('open');
+  }
+
+  function closeModal(overlayId, boxId) {
+    const ov = document.getElementById(overlayId);
+    const box = document.getElementById(boxId);
+    box.classList.remove('genie-enter');
+    box.classList.add('genie-exit');
+    setTimeout(() => {
+      ov.classList.remove('open');
+      box.classList.remove('genie-exit');
+    }, 300);
+  }
+
+  function openBackupModal() {
+    openModal('backupModal', 'backupModalBox');
+  }
+
+  window.handleNativeBack = function() {
+    if (document.getElementById('photoViewer').classList.contains('open')) {
+      closeViewer();
+    } else if (document.getElementById('docModal').classList.contains('open')) {
+      closeModal('docModal', 'docModalBox');
+    } else if (document.getElementById('backupModal').classList.contains('open')) {
+      closeModal('backupModal', 'backupModalBox');
+    } else {
+      lockAppNow();
+    }
+  };
+
+  // 10. Daily Auto-Backup & Manual Restore
+  function exportBackupNow(silent = false) {
+    const payload = JSON.stringify({ app: 'PocketId', exportedAt: new Date().toISOString(), docs });
+    const today = new Date().toISOString().slice(0, 10);
+    const fileName = `PocketId_Backup_${today}.json`;
+
+    if (window.AndroidBridge && AndroidBridge.saveBackupToDownloads) {
+      const res = AndroidBridge.saveBackupToDownloads(fileName, payload);
+      if (res === 'OK') {
+        localStorage.setItem(LS_LAST_BACKUP, today);
+        if (!silent) showToast('Saved to Downloads/PocketIdBackups');
+      } else if (!silent) {
+        showToast('Backup Failed');
+      }
+    }
+  }
+
+  function checkDailyAutoBackup() {
+    if (docs.length === 0) return;
+    const today = new Date().toISOString().slice(0, 10);
+    if (localStorage.getItem(LS_LAST_BACKUP) !== today) {
+      exportBackupNow(true);
+    }
+  }
+
+  function importBackup(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async function(ev) {
+      try {
+        const parsed = JSON.parse(ev.target.result);
+        if (Array.isArray(parsed.docs)) {
+          for (const item of parsed.docs) {
+            await saveItemToDB(item);
+          }
+          docs = await loadAllFromDB();
+          syncLocalStorageMeta();
+          renderDocs();
+          closeModal('backupModal', 'backupModalBox');
+          showToast('Vault Restored (' + docs.length + ' docs)');
+        }
+      } catch (err) {
+        showToast('Invalid Backup File');
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  function escapeHtml(str) {
+    return String(str || '').replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+  }
+
+  function escapeAttr(str) {
+    return String(str || '').replace(/'/g, "\\'");
+  }
+
+  // Boot App
+  (async function boot() {
+    const savedTheme = localStorage.getItem(LS_THEME_KEY) || 'bento';
+    currentThemeIdx = Math.max(0, themes.indexOf(savedTheme));
+    applyTheme(themes[currentThemeIdx]);
+    initLockState();
+    await initDB();
+    docs = await loadAllFromDB();
+    renderDocs();
+    if (localStorage.getItem(LS_PIN_KEY)) {
+      setTimeout(triggerBio, 350);
+    }
+  })();
+</script>
+</body>
+</html>
